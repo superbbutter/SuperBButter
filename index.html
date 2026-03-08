@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuperBButter - Bakery & OC</title>
+<link rel="icon" type="image/x-icon" href="https://drive.google.com/thumbnail?id=1aTumT9SN2pzCyOtInZyv85ksTcZyv5g1&sz=w1000">
+
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #FFFDF5; 
+  --main: #FBBF24; 
+  --dark: #78350F; 
+  --darker: #451A03; 
+  --white: rgba(255, 255, 255, 0.95);
+  --glass: rgba(255, 255, 255, 0.5); 
+  --glow: rgba(251, 191, 36, 0.25); 
+  --transition: 0.3s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Mitr', sans-serif; }
+
+body {
+  background: var(--bg);
+  background-image: linear-gradient(135deg, #FFFDF5 0%, #FFF8D6 100%);
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  color: var(--dark);
+  min-height: 100vh;
+}
+
+body.locked { overflow: hidden; }
+
+/* 🌟 Header 🌟 */
+header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  background: transparent;
+}
+
+.logo-wrapper { position: relative; width: 150px; height: 150px; margin-bottom: 5px; }
+.logo { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; box-shadow: 0 10px 30px var(--glow); transition: var(--transition); border: 5px solid #fff; position: relative; z-index: 2; }
+.logo img { width: 100%; height: 100%; object-fit: cover; background-color: #fff; }
+
+h1 { 
+  font-size: 28px; 
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, var(--darker), var(--dark)); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+  font-weight: 600;
+}
+
+.nav-bar {
+  width: 95%; 
+  max-width: 450px;
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.9);
+  display: flex; 
+  justify-content: space-around;
+  padding: 8px 5px;
+  border-radius: 35px;
+  box-shadow: 0 8px 25px rgba(120, 53, 15, 0.1);
+  z-index: 1000;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  margin-bottom: 5px;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: var(--dark);
+  font-size: 12px;
+  font-weight: 500;
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  padding: 6px 10px;
+  border-radius: 20px;
+  width: 25%;
+}
+.nav-item span { line-height: 1.2; }
+
+.nav-item.active { background: var(--dark); color: #fff; box-shadow: 0 4px 12px rgba(120, 53, 15, 0.2); }
+
+/* Rules Gate Area */
+#rules-gate {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--bg);
+  background-image: linear-gradient(135deg, #FFFDF5 0%, #FFF8D6 100%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 15px;
+  overflow-y: auto;
+  transition: opacity 0.5s ease;
+}
+
+.gate-content { max-width: 500px; width: 100%; animation: fadeIn 0.6s ease; }
+
+#main-wrapper {
+  display: none;
+  width: 100%;
+  max-width: 500px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.container {
+  width: 100%;
+  padding: 10px 15px 50px;
+}
+
+.page { display: none; animation: fadeIn 0.4s ease; }
+.page.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section {
+  backdrop-filter: blur(10px);
+  background: var(--glass);
+  border-radius: 25px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 10px 30px rgba(120, 53, 15, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* 🌟 หัวข้อหมวดหมู่แบบใหม่ 🌟 */
+.category-header {
+    display: inline-flex;
+    align-items: center;
+    background: #fff;
+    border: 2px solid var(--main);
+    padding: 8px 25px;
+    border-radius: 50px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.category-header h2 {
+    font-size: 18px;
+    color: var(--dark);
+    margin: 0;
+    font-weight: 600;
+}
+.category-desc {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-bottom: 25px; /* ระยะห่างระหว่างข้อความและรูปภาพตัวละคร */
+    padding-left: 10px;
+}
+
+.menu-img { 
+  width: 100%; 
+  height: auto; 
+  aspect-ratio: 879 / 1024; 
+  object-fit: cover; 
+  display: block; 
+  background-color: #FFF8D6; 
+  border-bottom: 1px solid rgba(251, 191, 36, 0.3); 
+}
+
+.menu-card { background: rgba(255, 255, 255, 0.85); border: 1px solid var(--main); border-radius: 20px; margin-bottom: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(120, 53, 15, 0.05); transition: var(--transition); }
+.menu-card:hover { transform: translateY(-3px); }
+.menu-header { display: block; cursor: pointer; }
+.menu-title-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 15px; }
+.menu-title { font-weight: 500; color: var(--dark); font-size: 15px; flex: 1; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+.menu-icon { font-size: 12px; color: var(--dark); transition: transform 0.3s ease; padding: 5px; background: #FFF8D6; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; margin-left: 10px; }
+.menu-card.open .menu-icon { transform: rotate(180deg); background: var(--main); }
+
+.menu-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: rgba(255, 255, 255, 0.5); padding: 0 15px; }
+.menu-card.open .menu-details { max-height: 500px; padding: 10px 15px 15px; }
+
+.detail-text { 
+  font-size: 14px; 
+  margin-bottom: 8px; 
+  color: var(--darker); 
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-view { display: inline-block; margin-top: 5px; background: linear-gradient(135deg, var(--main), #FDE047); color: var(--darker); padding: 10px 20px; border-radius: 25px; text-decoration: none; font-size: 13px; font-weight: 600; text-align: center; width: 100%; border: none; cursor: pointer; transition: 0.3s; }
+.btn-view:hover { transform: translateY(-2px); }
+
+.rule-box { background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 15px; font-size: 13px; line-height: 1.6; border: 1px dashed var(--main); text-align: left; }
+.highlight { color: #b91c1c; font-weight: 500; } 
+.btn-accept { font-size: 16px; padding: 15px; margin-top: 15px; animation: pulse 2s infinite; }
+
+.floating-emoji { position: absolute; font-size: 24px; z-index: 5; animation: floatEmoji 3s infinite; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+.emoji-1 { top: -10px; left: -10px; animation-delay: 0s; font-size: 26px; } 
+.emoji-2 { top: 20px; right: -20px; animation-delay: 0.7s; } 
+.emoji-3 { bottom: 15px; left: -15px; animation-delay: 1.4s; } 
+.emoji-4 { bottom: -5px; right: -10px; animation-delay: 2.1s; font-size: 28px; } 
+@keyframes floatEmoji { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+.mini-contact { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 2px dashed rgba(251, 191, 36, 0.3); }
+.socials-mini { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; flex-wrap: wrap; }
+.socials-mini a { padding: 6px 15px; border-radius: 20px; background: #fff; text-decoration: none; color: var(--dark); font-size: 12px; border: 1px solid var(--main); transition: var(--transition); }
+.copyright { font-size: 10px; opacity: 0.6; }
+
+/* 🌟 Status Lights & Styles 🌟 */
+.status-light { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+.status-sp-ota { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+.status-tent { background: #eab308; box-shadow: 0 0 8px #eab308; }
+.status-forever { background: #94a3b8; }
+
+/* 🌟 Modal Styles 🌟 */
+.modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); overflow-y: auto; }
+.modal-content { background: var(--bg); margin: 5% auto; padding: 25px; border-radius: 25px; width: 90%; max-width: 450px; border: 2px solid var(--main); animation: fadeIn 0.3s ease; text-align: center; }
+.modal-input, .modal-select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 15px; border: 1px solid var(--main); font-size: 14px; text-align: left; background: #fff; }
+.btn-confirm { background: var(--main); color: var(--darker); margin-top: 15px; padding: 12px; width: 100%; border-radius: 15px; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.btn-delete-confirm { background: #b91c1c; color: #fff; margin-top: 15px; padding: 12px; width: 100%; border-radius: 15px; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.btn-close-modal { color: var(--dark); font-size: 12px; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; }
+
+/* 🌟 Manage UI 🌟 */
+.manage-nav { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; background: rgba(120, 53, 15, 0.05); padding: 5px; border-radius: 15px; }
+.manage-tab { flex: 1; padding: 10px 5px; border-radius: 12px; cursor: pointer; font-size: 13px; font-weight: 500; transition: var(--transition); text-align: center; }
+.manage-tab.active { background: var(--main); color: var(--darker); box-shadow: 0 4px 10px var(--glow); }
+
+.edit-card-item { background: #fff; padding: 15px; border-radius: 20px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(251, 191, 36, 0.2); display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.edit-row { display: flex; justify-content: space-between; align-items: center; }
+.order-group { display: flex; gap: 8px; }
+.btn-order { 
+    width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; background: #fff; 
+    display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; 
+    transition: 0.2s; color: var(--dark); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.btn-order:hover { background: var(--main); border-color: var(--main); color: var(--darker); transform: scale(1.1); }
+</style>
+</head>
+
+<body class="locked">
+
+<div id="rules-gate">
+  <div class="gate-content section center">
+    <div style="width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 50%; overflow: hidden; border: 3px solid #fff; box-shadow: 0 5px 15px var(--glow);">
+      <img src="https://drive.google.com/thumbnail?id=1aTumT9SN2pzCyOtInZyv85ksTcZyv5g1&sz=w1000" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <h2>📋 กติกาการเข้าชมครัว</h2>
+    <div class="rule-box">
+      <p><strong>₊˚ෆ อ่านรายละเอียดให้ครบถ้วน ୭˚. ᵎᵎ</strong></p>
+      <p>꩜ .ᐟ ก่อนก้าวเข้าสู่ครัวขนมของเรา กรุณาทำตามประกาศอย่างเคร่งครัด !</p>
+      <p>♡ สามารถชื่นชมเด็กๆ ได้แต่ขอความร่วมมือ <span style="text-decoration: underline;">แจ้งให้ทางร้านทราบก่อนนะคะ</span></p>
+      <p class="highlight">❯❯ หากพบพฤติกรรมไม่เหมาะสม ทางร้านขอเชิญออกจากครัวทันทีค่ะ !!</p>
+    </div>
+    <h2 style="margin-top: 20px;">📋 ประกาศจากหน้าเตาอบ</h2>
+    <div class="rule-box" style="background: rgba(255,255,255,0.9); border-color: #b91c1c;">
+      <p class="highlight">⚠︎ Warning</p>
+      <p>✘ ห้ามคัดลอกดีไซน์ นำไปดัดแปลง หรือจำหน่ายต่อโดยเด็ดขาด</p>
+    </div>
+    <button class="btn-view btn-accept" onclick="acceptRules()">✅ ล้างมือและเข้าสู่ครัว</button>
+  </div>
+</div>
+
+<div id="main-wrapper">
+  <header>
+    <div class="logo-wrapper">
+      <div class="floating-emoji emoji-1">🧸</div><div class="floating-emoji emoji-2">🧈</div>
+      <div class="floating-emoji emoji-3">🥞</div><div class="floating-emoji emoji-4">⭐️</div>
+      <div class="logo">
+        <img src="https://drive.google.com/thumbnail?id=1aTumT9SN2pzCyOtInZyv85ksTcZyv5g1&sz=w1000" alt="SuperBButter Logo">
+      </div>
+    </div>
+    <h1>SuperBButter</h1>
+    <nav class="nav-bar">
+      <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span><span>โฮม</span></div>
+      <div class="nav-item" onclick="showPage('bread', this)"><span>🍞</span><span>ขนมปัง</span></div>
+      <div class="nav-item" onclick="showPage('cake', this)"><span>🍰</span><span>เค้ก</span></div>
+      <div class="nav-item" onclick="showPage('drink', this)"><span>🍵</span><span>เครื่องดื่ม</span></div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div id="home" class="page active">
+      <div class="rule-box" style="text-align: center; border-color: var(--main); margin-bottom: 15px;">
+        <p style="font-size: 14px; font-weight: 500;">เบเกอรี่เล็ก ๆ ที่เต็มไปด้วยขนมจากเชฟยอดฝีมือ 👩🏻‍🍳</p>
+        <p style="font-size: 13px; opacity: 0.9;">เด็ก ๆ ทุกคนคือขนมภายในร้านที่แสนอร่อย ✨</p>
+      </div>
+
+      <div class="section" style="padding: 15px;">
+        <h3 style="font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;">✨ สัญลักษณ์ในครัว</h3>
+        <div style="font-size: 13px; line-height: 1.8;">
+            <div><span class="status-light status-sp-ota"></span> <strong>SP / OTA :</strong> พร้อมสำหรับการย้ายบ้าน</div>
+            <div><span class="status-light status-tent"></span> <strong>TENT :</strong> ยังลังเลใจ (พิจารณาอยู่ค่ะ)</div>
+            <div><span class="status-light status-forever"></span> <strong>Forever Home :</strong> มีบ้านที่แสนอบอุ่นแล้ว</div>
+            <div style="border-top: 1px dashed var(--main); margin: 8px 0;"></div>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <span>❤️ มีคู่</span> <span>🤍 โสด</span> <span>🚫 ไม่มีความรัก</span>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bread" class="page">
+      <div class="section">
+        <div class="category-header">
+            <h2>🍞 เมนูขนมปัง</h2>
+        </div>
+        <p class="category-desc">ขนมอบใหม่หอมกรุ่นจากเตา พร้อมเสิร์ฟค่ะ ✨</p>
+        <div id="bread-container"><div class="loading-text">กำลังโหลดข้อมูลจากเตาอบ... 👩🏻‍🍳</div></div>
+      </div>
+    </div>
+
+    <div id="cake" class="page">
+      <div class="section">
+        <div class="category-header">
+            <h2>🍰 เมนูเค้ก</h2>
+        </div>
+        <p class="category-desc">เค้กเนื้อนุ่ม ละมุนลิ้น รังสรรค์โดยเชฟยอดฝีมือ ✨</p>
+        <div id="cake-container"><div class="loading-text">กำลังโหลดข้อมูลจากเตาอบ... 👩🏻‍🍳</div></div>
+      </div>
+    </div>
+
+    <div id="drink" class="page">
+      <div class="section">
+        <div class="category-header">
+            <h2>🍵 เมนูเครื่องดื่ม</h2>
+        </div>
+        <p class="category-desc">เครื่องดื่มดับกระหาย ทานคู่กับขนมเข้ากันสุดๆ ✨</p>
+        <div id="drink-container"><div class="loading-text">กำลังโหลดข้อมูลจากเตาอบ... 👩🏻‍🍳</div></div>
+      </div>
+    </div>
+
+    <div class="mini-contact">
+      <div class="socials-mini">
+        <a href="https://www.facebook.com/profile.php?id=61554192600355" target="_blank">Facebook</a>
+        <a href="https://line.me/ti/p/LfBtdhlrVa" target="_blank">Line</a>
+      </div>
+      <div class="socials-mini" style="margin-top: 5px;">
+        <a href="javascript:void(0)" onclick="openAddAuthModal()" style="border-color: var(--main); color: var(--dark);">➕ เพิ่มตัวละคร</a>
+        <a href="javascript:void(0)" onclick="openEditAuthModal()" style="border-color: var(--dark); color: var(--dark); font-weight: 600;">📝 แก้ไขการแสดงผล</a>
+        <a href="javascript:void(0)" onclick="openDeleteModal()" style="border-color: #b91c1c; color: #b91c1c;">🗑️ แจ้งลบข้อมูล</a>
+      </div>
+      <div class="copyright">© 2026 SuperBButter Bakery. All rights reserved.</div>
+    </div>
+  </div> 
+</div>
+
+<div id="addAuthModal" class="modal">
+  <div class="modal-content">
+    <h3>🔑 เข้าสู่ระบบหลังเตา</h3>
+    <input type="password" id="addMasterPin" class="modal-input" placeholder="รหัสผ่าน">
+    <button class="btn-confirm" onclick="checkAddAuth()">ยืนยันรหัส</button>
+    <span class="btn-close-modal" onclick="closeModal('addAuthModal')">ยกเลิก</span>
+  </div>
+</div>
+
+<div id="addCharModal" class="modal">
+  <div class="modal-content" style="text-align: left;">
+    <h3 style="text-align: center;">🧁 อบขนมชิ้นใหม่</h3>
+    <label class="modal-label">หมวดหมู่ *</label>
+    <select id="charCategory" class="modal-select"><option value="ขนมปัง">ขนมปัง</option><option value="เค้ก">เค้ก</option><option value="เครื่องดื่ม">เครื่องดื่ม</option></select>
+    <label class="modal-label">ชื่อขนม *</label><input type="text" id="charName" class="modal-input">
+    <label class="modal-label">คำบรรยาย</label><input type="text" id="charDesc" class="modal-input">
+    <label class="modal-label">ลิ้งก์รูป *</label><input type="text" id="charImg" class="modal-input">
+    <label class="modal-label">นักวาด *</label><input type="text" id="charArtist" class="modal-input">
+    <label class="modal-label">ลิ้งก์นักวาด</label><input type="text" id="charArtistLink" class="modal-input">
+    <label class="modal-label">มูลค่า *</label><input type="text" id="charPrice" class="modal-input">
+    <label class="modal-label">ลิ้งก์เพิ่มเติม *</label><input type="text" id="charMore" class="modal-input">
+    <button class="btn-confirm" style="width:100%" onclick="submitNewCharacter()">🚀 ส่งเข้าเตาอบ</button>
+    <span class="btn-close-modal" style="text-align: center;" onclick="closeModal('addCharModal')">กลับหน้าหลัก</span>
+  </div>
+</div>
+
+<div id="editAuthModal" class="modal">
+  <div class="modal-content">
+    <h3>🔑 ยืนยันตัวตนเชฟ</h3>
+    <input type="password" id="editMasterPin" class="modal-input" placeholder="รหัสผ่าน">
+    <button class="btn-confirm" onclick="checkEditAuth()">ยืนยันรหัส</button>
+    <span class="btn-close-modal" onclick="closeModal('editAuthModal')">ยกเลิก</span>
+  </div>
+</div>
+
+<div id="manageModal" class="modal">
+  <div class="modal-content" style="max-width: 480px; text-align: left;">
+    <h3 style="text-align: center;">🎨 ปรับแต่งห้องครัว</h3>
+    <div class="manage-nav">
+        <div class="manage-tab active" data-cat="ขนมปัง" onclick="setManageCategory(this)">ขนมปัง</div>
+        <div class="manage-tab" data-cat="เค้ก" onclick="setManageCategory(this)">เค้ก</div>
+        <div class="manage-tab" data-cat="เครื่องดื่ม" onclick="setManageCategory(this)">เครื่องดื่ม</div>
+    </div>
+    <div id="edit-list-container" style="margin-top: 5px; max-height: 400px; overflow-y: auto; padding: 5px;"></div>
+    <button class="btn-confirm" onclick="saveAllEdits()">💾 บันทึกและรีโหลด</button>
+    <span class="btn-close-modal" style="text-align: center;" onclick="closeModal('manageModal')">ปิดหน้าต่าง</span>
+  </div>
+</div>
+
+<div id="deleteModal" class="modal">
+  <div class="modal-content">
+    <h3>📢 แจ้งถอนการติดตั้ง</h3>
+    <input type="text" id="delName" class="modal-input" placeholder="ชื่อขนม">
+    <input type="password" id="delPin" class="modal-input" placeholder="รหัสลับ (8888)">
+    <button class="btn-delete-confirm" onclick="confirmDelete()">🔥 ยืนยันการลบ</button>
+    <span class="btn-close-modal" onclick="closeModal('deleteModal')">ยกเลิก</span>
+  </div>
+</div>
+
+<script>
+// โหลดข้อมูลจาก LocalStorage (ใช้แทนการดึงจาก Google Sheets)
+let allData = JSON.parse(localStorage.getItem('bakery_data')) || []; 
+let currentManageCategory = "ขนมปัง";
+
+function acceptRules() {
+  const gate = document.getElementById('rules-gate');
+  const mainWrapper = document.getElementById('main-wrapper');
+  gate.style.opacity = '0';
+  setTimeout(() => {
+    gate.style.display = 'none';
+    mainWrapper.style.display = 'flex';
+    mainWrapper.style.flexDirection = 'column';
+    mainWrapper.style.alignItems = 'center';
+    setTimeout(() => { mainWrapper.style.opacity = '1'; }, 50);
+    document.body.classList.remove('locked');
+  }, 500);
+}
+
+function showPage(pageId, element) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  element.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleMenu(headerElement) { headerElement.parentElement.classList.toggle('open'); }
+function openAddAuthModal() { document.getElementById('addAuthModal').style.display = 'block'; }
+function openDeleteModal() { document.getElementById('deleteModal').style.display = 'block'; }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+function checkAddAuth() {
+    if(document.getElementById('addMasterPin').value === "8888") {
+        closeModal('addAuthModal');
+        document.getElementById('addCharModal').style.display = 'block';
+    } else { alert("รหัสผ่านไม่ถูกต้องค่ะ ❌"); }
+}
+
+function submitNewCharacter() {
+    const data = {
+        category: document.getElementById('charCategory').value,
+        name: document.getElementById('charName').value,
+        desc: document.getElementById('charDesc').value,
+        img: document.getElementById('charImg').value,
+        artist: document.getElementById('charArtist').value,
+        artistLink: document.getElementById('charArtistLink').value,
+        price: document.getElementById('charPrice').value,
+        more: document.getElementById('charMore').value
+    };
+    if(!data.name || !data.img || !data.artist || !data.price || !data.more) return alert("กรุณากรอกข้อมูลให้ครบถ้วนค่ะ");
+
+    // บันทึกข้อมูลลงใน LocalStorage แทนการส่งไป Google Forms
+    const newItem = {
+        "หมวดหมู่": data.category,
+        "ชื่อขนม": data.name,
+        "คำบรรยาย": data.desc,
+        "Link รูปตัวละคร": data.img,
+        "นักวาด": data.artist,
+        "Link นักวาด": data.artistLink,
+        "มูลค่า": data.price,
+        "Link เพื่อดูเพิ่มเติม": data.more
+    };
+
+    allData.push(newItem);
+    localStorage.setItem('bakery_data', JSON.stringify(allData));
+
+    alert("อบขนมสำเร็จ!"); 
+    location.reload();
+}
+
+function openEditAuthModal() { document.getElementById('editAuthModal').style.display = 'block'; }
+function checkEditAuth() {
+    if(document.getElementById('editMasterPin').value === "8888") {
+        closeModal('editAuthModal');
+        document.getElementById('manageModal').style.display = 'block';
+        renderEditList();
+    } else { alert("รหัสผ่านไม่ถูกต้องค่ะ ❌"); }
+}
+function setManageCategory(element) {
+    document.querySelectorAll('.manage-tab').forEach(t => t.classList.remove('active'));
+    element.classList.add('active');
+    currentManageCategory = element.dataset.cat;
+    renderEditList();
+}
+function getLocalSettings() { return JSON.parse(localStorage.getItem('bakery_settings') || '{}'); }
+
+function renderEditList() {
+    const container = document.getElementById('edit-list-container');
+    const settings = getLocalSettings();
+    const items = allData.filter(i => i['หมวดหมู่'] === currentManageCategory).sort((a,b) => (settings[a['ชื่อขนม']]?.order || 0) - (settings[b['ชื่อขนม']]?.order || 0));
+    container.innerHTML = '';
+    items.forEach((item, index) => {
+        const name = item['ชื่อขนม'];
+        const set = settings[name] || {};
+        container.innerHTML += `
+            <div class="edit-card-item" data-name="${name}">
+                <div class="edit-row">
+                    <strong style="color:var(--darker)">${name}</strong> 
+                    <div class="order-group">
+                        <div class="btn-order" onclick="moveItem('${name}', -1)">↑</div>
+                        <div class="btn-order" onclick="moveItem('${name}', 1)">↓</div>
+                    </div>
+                </div>
+                <div class="edit-row" style="gap:10px;">
+                    <select class="modal-select edit-sale" style="margin:0; flex:1">
+                        <option value="1" ${set.sale=='1'?'selected':''}>Forever Home</option>
+                        <option value="2" ${set.sale=='2'?'selected':''}>TENT</option>
+                        <option value="3" ${set.sale=='3'?'selected':''}>OTA/SP</option>
+                    </select>
+                    <select class="modal-select edit-love" style="margin:0; flex:1">
+                        <option value="1" ${set.love=='1'?'selected':''}>มีคู่ ❤️</option>
+                        <option value="2" ${set.love=='2'?'selected':''}>โสด 🤍</option>
+                        <option value="3" ${set.love=='3'?'selected':''}>ไม่มีความรัก 🚫</option>
+                    </select>
+                </div>
+            </div>`;
+    });
+}
+
+function moveItem(name, dir) {
+    const settings = getLocalSettings();
+    const items = allData.filter(i => i['หมวดหมู่'] === currentManageCategory).sort((a,b) => (settings[a['ชื่อขนม']]?.order || 0) - (settings[b['ชื่อขนม']]?.order || 0));
+    const idx = items.findIndex(i => i['ชื่อขนม'] === name);
+    if(idx + dir >= 0 && idx + dir < items.length) {
+        const temp = items[idx]; items[idx] = items[idx+dir]; items[idx+dir] = temp;
+        items.forEach((it, i) => { if(!settings[it['ชื่อขนม']]) settings[it['ชื่อขนม']]={}; settings[it['ชื่อขนม']].order = i; });
+        localStorage.setItem('bakery_settings', JSON.stringify(settings));
+        renderEditList();
+    }
+}
+
+function saveAllEdits() {
+    const settings = getLocalSettings();
+    document.querySelectorAll('.edit-card-item').forEach(card => {
+        const name = card.dataset.name;
+        if(!settings[name]) settings[name] = {};
+        settings[name].sale = card.querySelector('.edit-sale').value;
+        settings[name].love = card.querySelector('.edit-love').value;
+    });
+    localStorage.setItem('bakery_settings', JSON.stringify(settings));
+    alert("บันทึกสำเร็จ!"); location.reload();
+}
+
+function fetchData() {
+    // นำข้อมูลจาก LocalStorage มาแสดงผลโดยตรง
+    displayData(allData);
+}
+
+function displayData(data) {
+  const containers = { 'ขนมปัง': document.getElementById('bread-container'), 'เค้ก': document.getElementById('cake-container'), 'เครื่องดื่ม': document.getElementById('drink-container') };
+  
+  Object.values(containers).forEach(c => {
+      const cards = c.querySelectorAll('.menu-card, .loading-text');
+      cards.forEach(card => card.remove());
+  });
+
+  const settings = getLocalSettings();
+  data.sort((a, b) => (settings[a['ชื่อขนม']]?.order || 999) - (settings[b['ชื่อขนม']]?.order || 999));
+
+  data.forEach(item => {
+    const target = containers[item['หมวดหมู่']];
+    if (!target) return;
+    const name = item['ชื่อขนม'];
+    const set = settings[name] || {sale:'1', love:'2'};
+
+    let lightClass = 'status-forever';
+    if(set.sale === '2') lightClass = 'status-tent';
+    if(set.sale === '3') lightClass = 'status-sp-ota';
+
+    let loveIcon = '';
+    if(set.love === '1') loveIcon = '<span style="margin-left:5px">❤️</span>';
+    if(set.love === '2') loveIcon = '<span style="margin-left:5px">🤍</span>';
+    if(set.love === '3') loveIcon = '<span style="margin-left:5px">🚫</span>';
+
+    let imgUrl = item['Link รูปตัวละคร'] || ''; 
+    if (imgUrl.includes('drive.google.com/file/d/')) {
+      const id = imgUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (id) imgUrl = `https://drive.google.com/thumbnail?id=${id[1]}&sz=w1000`;
+    }
+    const artistDisplay = item['Link นักวาด'] ? `<a href="${item['Link นักวาด']}" target="_blank" style="color:var(--darker); text-decoration:underline;">${item['นักวาด']}</a>` : item['นักวาด'];
+    const introText = item['คำบรรยาย'] ? `<div style="font-size: 11px; font-weight: normal; opacity: 0.7; margin-top: 2px; line-height: 1.3; width:100%;">${item['คำบรรยาย']}</div>` : '';
+
+    target.innerHTML += `
+      <div class="menu-card">
+        <div class="menu-header" onclick="toggleMenu(this)">
+          <img src="${imgUrl}" alt="${name}" class="menu-img">
+          <div class="menu-title-row">
+            <div class="menu-title">
+                <span class="status-light ${lightClass}"></span>
+                ${name} ${loveIcon}
+                ${introText}
+            </div>
+            <div class="menu-icon">▼</div>
+          </div>
+        </div>
+        <div class="menu-details">
+          <div class="detail-text"><span>🎨</span> <strong>นักวาด:</strong> ${artistDisplay}</div>
+          <div class="detail-text"><span>💰</span> <strong>มูลค่า:</strong> ${item['มูลค่า']}</div>
+          <a href="${item['Link เพื่อดูเพิ่มเติม'] || '#'}" class="btn-view" target="_blank">🔍 ดูข้อมูลเพิ่มเติม</a>
+        </div>
+      </div>`;
+  });
+  Object.keys(containers).forEach(key => { 
+      if (containers[key].querySelectorAll('.menu-card').length === 0) 
+          containers[key].innerHTML += '<div class="loading-text">ยังไม่มีเมนูในหมวดนี้ 🥺</div>'; 
+  });
+}
+
+function confirmDelete() {
+  const name = document.getElementById('delName').value;
+  const pin = document.getElementById('delPin').value;
+  if(!name || !pin) return alert("กรุณากรอกข้อมูลให้ครบถ้วนค่ะ");
+  
+  if(pin !== "8888") return alert("รหัสลับไม่ถูกต้องค่ะ ❌");
+
+  if(confirm(`คุณแน่ใจนะคะว่าจะลบ "${name}"?`)) {
+    const initialLength = allData.length;
+    // ลบออกจาก Array ของ LocalStorage โดยตรง
+    allData = allData.filter(item => item['ชื่อขนม'] !== name);
+    
+    if(allData.length < initialLength) {
+        localStorage.setItem('bakery_data', JSON.stringify(allData));
+        
+        // เคลียร์ค่าตั้งค่าของตัวละครที่ถูกลบไปแล้วด้วย
+        const settings = getLocalSettings();
+        if(settings[name]) {
+            delete settings[name];
+            localStorage.setItem('bakery_settings', JSON.stringify(settings));
+        }
+
+        alert("ลบข้อมูลแล้วค่ะ!"); 
+        location.reload();
+    } else {
+        alert("ไม่พบชื่อขนมนี้ในระบบค่ะ 🥲");
+    }
+  }
+}
+
+// เริ่มต้นดึงข้อมูลขึ้นมาแสดง
+fetchData();
+</script>
+</body>
+</html>
