@@ -437,6 +437,17 @@ function showPage(pageId, element) {
   document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
   element.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // 🌟 จัดการปุ่มเพิ่มตัวละครให้แสดงเฉพาะหน้าหมวดหมู่ 🌟
+  if (isEditMode) {
+      if (pageId !== 'home') {
+          document.getElementById('admin-add-bar').style.display = 'block';
+      } else {
+          document.getElementById('admin-add-bar').style.display = 'none';
+      }
+  } else {
+      document.getElementById('admin-add-bar').style.display = 'none';
+  }
 }
 
 function toggleMenu(headerElement) { 
@@ -448,7 +459,6 @@ function toggleMenu(headerElement) {
 function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
 function openAddCharModal() { 
-    // เคลียร์ข้อมูลเก่าในฟอร์มก่อนเปิด
     document.getElementById('charName').value = '';
     document.getElementById('charDesc').value = '';
     document.getElementById('charImg').value = '';
@@ -456,6 +466,14 @@ function openAddCharModal() {
     document.getElementById('charArtistLink').value = '';
     document.getElementById('charPrice').value = '';
     document.getElementById('charMore').value = '';
+    
+    // ดึงค่าหน้าปัจจุบันมาใส่หมวดหมู่ให้เลย (UX Improvement)
+    const activePageId = document.querySelector('.page.active').id;
+    const categorySelect = document.getElementById('charCategory');
+    if (activePageId === 'bread') categorySelect.value = 'ขนมปัง';
+    if (activePageId === 'cake') categorySelect.value = 'เค้ก';
+    if (activePageId === 'drink') categorySelect.value = 'เครื่องดื่ม';
+
     document.getElementById('addCharModal').style.display = 'block'; 
 }
 
@@ -487,8 +505,8 @@ function submitNewCharacter() {
     localStorage.setItem('bakery_data', JSON.stringify(allData));
     
     alert("อบขนมสำเร็จ!"); 
-    closeModal('addCharModal'); // ปิดหน้าต่างแทนการรีโหลด เพื่อให้อยู่โหมดแก้ไขต่อได้
-    displayData(allData); // อัปเดตข้อมูลบนหน้าเว็บทันที
+    closeModal('addCharModal'); 
+    displayData(allData); 
 }
 
 function openEditAuthModal() { document.getElementById('editAuthModal').style.display = 'block'; }
@@ -499,7 +517,15 @@ function checkEditAuth() {
         document.getElementById('editMasterPin').value = '';
         isEditMode = true;
         document.getElementById('admin-bar').style.display = 'block';
-        document.getElementById('admin-add-bar').style.display = 'block'; // แสดงปุ่มเพิ่มตัวละคร
+        
+        // เช็คหน้าปัจจุบันตอนล็อคอิน
+        const activePageId = document.querySelector('.page.active').id;
+        if (activePageId !== 'home') {
+            document.getElementById('admin-add-bar').style.display = 'block';
+        } else {
+            document.getElementById('admin-add-bar').style.display = 'none';
+        }
+
         displayData(allData); 
     } else { alert("รหัสผ่านไม่ถูกต้องค่ะ ❌"); }
 }
@@ -507,7 +533,7 @@ function checkEditAuth() {
 function exitEditMode() {
     isEditMode = false;
     document.getElementById('admin-bar').style.display = 'none';
-    document.getElementById('admin-add-bar').style.display = 'none'; // ซ่อนปุ่มเพิ่มตัวละคร
+    document.getElementById('admin-add-bar').style.display = 'none'; 
     displayData(allData); 
 }
 
@@ -550,7 +576,6 @@ function displayData(data) {
     const artistDisplay = item['Link นักวาด'] ? `<a href="${item['Link นักวาด']}" target="_blank" style="color:var(--darker); text-decoration:underline;">${item['นักวาด']}</a>` : item['นักวาด'];
     const introText = item['คำบรรยาย'] ? `<div style="font-size: 11px; font-weight: normal; opacity: 0.7; margin-top: 2px; line-height: 1.3; width:100%;">${item['คำบรรยาย']}</div>` : '';
 
-    // ปุ่มแอดมิน (เพิ่มปุ่มลบตัวละครไว้ล่างสุด)
     let adminBtns = '';
     if(isEditMode) {
         adminBtns = `
@@ -612,14 +637,11 @@ function moveItemInline(name, dir, category) {
     }
 }
 
-// 🌟 ฟังก์ชันลบตัวละคร (แบบใหม่ กดจากการ์ดได้เลย) 🌟
 function deleteItemInline(name) {
     if(confirm(`คุณแน่ใจนะคะว่าจะลบ "${name}" ออกจากเตาอบ?`)) {
-        // ลบออกจาก array
         allData = allData.filter(item => item['ชื่อขนม'] !== name);
         localStorage.setItem('bakery_data', JSON.stringify(allData));
         
-        // ลบการตั้งค่าของตัวละครนั้นทิ้งไปด้วย
         const settings = getLocalSettings();
         if(settings[name]) {
             delete settings[name];
@@ -627,7 +649,7 @@ function deleteItemInline(name) {
         }
         
         alert("ลบข้อมูลแล้วค่ะ! 🗑️");
-        displayData(allData); // อัปเดตหน้าเว็บใหม่
+        displayData(allData); 
     }
 }
 
