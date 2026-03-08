@@ -54,6 +54,28 @@ body.locked { overflow: hidden; }
 }
 .btn-exit-edit:hover { background: #FDE047; transform: scale(1.05); }
 
+/* 🌟 Admin Add Button (Large Bar) 🌟 */
+#admin-add-bar {
+  display: none;
+  width: 100%;
+  margin-bottom: 15px;
+  animation: fadeIn 0.4s ease;
+}
+.btn-admin-add {
+  width: 100%;
+  padding: 15px;
+  background: #22c55e;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+  transition: var(--transition);
+}
+.btn-admin-add:hover { background: #16a34a; transform: translateY(-2px); }
+
 /* 🌟 Header 🌟 */
 header {
   width: 100%;
@@ -159,7 +181,7 @@ h1 {
   border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-/* 🌟 หัวข้อหมวดหมู่แบบใหม่ 🌟 */
+/* 🌟 หัวข้อหมวดหมู่ 🌟 */
 .category-header {
     display: inline-flex;
     align-items: center;
@@ -170,27 +192,12 @@ h1 {
     margin-bottom: 15px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
-.category-header h2 {
-    font-size: 18px;
-    color: var(--dark);
-    margin: 0;
-    font-weight: 600;
-}
-.category-desc {
-    font-size: 13px;
-    opacity: 0.8;
-    margin-bottom: 25px;
-    padding-left: 10px;
-}
+.category-header h2 { font-size: 18px; color: var(--dark); margin: 0; font-weight: 600; }
+.category-desc { font-size: 13px; opacity: 0.8; margin-bottom: 25px; padding-left: 10px; }
 
 .menu-img { 
-  width: 100%; 
-  height: auto; 
-  aspect-ratio: 879 / 1024; 
-  object-fit: cover; 
-  display: block; 
-  background-color: #FFF8D6; 
-  border-bottom: 1px solid rgba(251, 191, 36, 0.3); 
+  width: 100%; height: auto; aspect-ratio: 879 / 1024; object-fit: cover; 
+  display: block; background-color: #FFF8D6; border-bottom: 1px solid rgba(251, 191, 36, 0.3); 
 }
 
 .menu-card { background: rgba(255, 255, 255, 0.85); border: 1px solid var(--main); border-radius: 20px; margin-bottom: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(120, 53, 15, 0.05); transition: var(--transition); }
@@ -204,15 +211,7 @@ h1 {
 .menu-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: rgba(255, 255, 255, 0.5); padding: 0 15px; }
 .menu-card.open .menu-details { max-height: 500px; padding: 10px 15px 15px; }
 
-.detail-text { 
-  font-size: 14px; 
-  margin-bottom: 8px; 
-  color: var(--darker); 
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
+.detail-text { font-size: 14px; margin-bottom: 8px; color: var(--darker); display: flex; align-items: center; gap: 8px; }
 .btn-view { display: inline-block; margin-top: 5px; background: linear-gradient(135deg, var(--main), #FDE047); color: var(--darker); padding: 10px 20px; border-radius: 25px; text-decoration: none; font-size: 13px; font-weight: 600; text-align: center; width: 100%; border: none; cursor: pointer; transition: 0.3s; }
 .btn-view:hover { transform: translateY(-2px); }
 
@@ -243,16 +242,18 @@ h1 {
 .modal-content { background: var(--bg); margin: 5% auto; padding: 25px; border-radius: 25px; width: 90%; max-width: 450px; border: 2px solid var(--main); animation: fadeIn 0.3s ease; text-align: center; }
 .modal-input, .modal-select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 15px; border: 1px solid var(--main); font-size: 14px; text-align: left; background: #fff; }
 .btn-confirm { background: var(--main); color: var(--darker); margin-top: 15px; padding: 12px; width: 100%; border-radius: 15px; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; }
-.btn-delete-confirm { background: #b91c1c; color: #fff; margin-top: 15px; padding: 12px; width: 100%; border-radius: 15px; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; }
 .btn-close-modal { color: var(--dark); font-size: 12px; cursor: pointer; text-decoration: underline; margin-top: 10px; display: block; }
 
 /* 🌟 Inline Edit Styles 🌟 */
-.btn-edit-inline, .btn-move-inline {
+.btn-edit-inline, .btn-move-inline, .btn-delete-inline {
     background: #fff; border: 1px solid var(--main); border-radius: 15px;
-    padding: 6px 12px; font-size: 12px; cursor: pointer; color: var(--dark);
+    padding: 8px 12px; font-size: 12px; cursor: pointer; color: var(--dark);
     font-weight: 500; transition: 0.2s;
 }
 .btn-edit-inline:hover, .btn-move-inline:hover { background: var(--main); color: var(--darker); }
+.btn-delete-inline { border-color: #ef4444; color: #ef4444; }
+.btn-delete-inline:hover { background: #ef4444; color: #fff; }
+
 .edit-form-container {
     padding: 15px; background: rgba(255,255,255,0.95);
     border-top: 1px dashed var(--main); display: flex; flex-direction: column; gap: 8px;
@@ -318,6 +319,11 @@ h1 {
   </header>
 
   <div class="container">
+    
+    <div id="admin-add-bar">
+        <button class="btn-admin-add" onclick="openAddCharModal()">➕ อบขนมชิ้นใหม่ (เพิ่มตัวละคร)</button>
+    </div>
+
     <div id="home" class="page active">
       <div class="rule-box" style="text-align: center; border-color: var(--main); margin-bottom: 15px;">
         <p style="font-size: 14px; font-weight: 500;">เบเกอรี่เล็ก ๆ ที่เต็มไปด้วยขนมจากเชฟยอดฝีมือ 👩🏻‍🍳</p>
@@ -374,22 +380,11 @@ h1 {
         <a href="https://line.me/ti/p/LfBtdhlrVa" target="_blank">Line</a>
       </div>
       <div class="socials-mini" style="margin-top: 5px;">
-        <a href="javascript:void(0)" onclick="openAddAuthModal()" style="border-color: var(--main); color: var(--dark);">➕ เพิ่มตัวละคร</a>
-        <a href="javascript:void(0)" onclick="openEditAuthModal()" style="border-color: var(--dark); color: var(--dark); font-weight: 600;">📝 แก้ไขการแสดงผล</a>
-        <a href="javascript:void(0)" onclick="openDeleteModal()" style="border-color: #b91c1c; color: #b91c1c;">🗑️ แจ้งลบข้อมูล</a>
+        <a href="javascript:void(0)" onclick="openEditAuthModal()" style="border-color: var(--dark); color: var(--dark); font-weight: 600;">🛠️ เข้าสู่โหมดจัดการ</a>
       </div>
       <div class="copyright">© 2026 SuperBButter Bakery. All rights reserved.</div>
     </div>
   </div> 
-</div>
-
-<div id="addAuthModal" class="modal">
-  <div class="modal-content">
-    <h3>🔑 เข้าสู่ระบบหลังเตา</h3>
-    <input type="password" id="addMasterPin" class="modal-input" placeholder="รหัสผ่าน">
-    <button class="btn-confirm" onclick="checkAddAuth()">ยืนยันรหัส</button>
-    <span class="btn-close-modal" onclick="closeModal('addAuthModal')">ยกเลิก</span>
-  </div>
 </div>
 
 <div id="addCharModal" class="modal">
@@ -405,26 +400,16 @@ h1 {
     <label class="modal-label">มูลค่า *</label><input type="text" id="charPrice" class="modal-input">
     <label class="modal-label">ลิ้งก์เพิ่มเติม *</label><input type="text" id="charMore" class="modal-input">
     <button class="btn-confirm" style="width:100%" onclick="submitNewCharacter()">🚀 ส่งเข้าเตาอบ</button>
-    <span class="btn-close-modal" style="text-align: center;" onclick="closeModal('addCharModal')">กลับหน้าหลัก</span>
+    <span class="btn-close-modal" style="text-align: center;" onclick="closeModal('addCharModal')">ยกเลิก</span>
   </div>
 </div>
 
 <div id="editAuthModal" class="modal">
   <div class="modal-content">
-    <h3>🔑 ยืนยันตัวตนเชฟ (เข้าโหมดแก้ไข)</h3>
+    <h3>🔑 ยืนยันตัวตนเชฟ (เข้าโหมดจัดการ)</h3>
     <input type="password" id="editMasterPin" class="modal-input" placeholder="รหัสผ่าน (8888)">
     <button class="btn-confirm" onclick="checkEditAuth()">ยืนยันรหัส</button>
     <span class="btn-close-modal" onclick="closeModal('editAuthModal')">ยกเลิก</span>
-  </div>
-</div>
-
-<div id="deleteModal" class="modal">
-  <div class="modal-content">
-    <h3>📢 แจ้งถอนการติดตั้ง</h3>
-    <input type="text" id="delName" class="modal-input" placeholder="ชื่อขนม">
-    <input type="password" id="delPin" class="modal-input" placeholder="รหัสลับ (8888)">
-    <button class="btn-delete-confirm" onclick="confirmDelete()">🔥 ยืนยันการลบ</button>
-    <span class="btn-close-modal" onclick="closeModal('deleteModal')">ยกเลิก</span>
   </div>
 </div>
 
@@ -459,16 +444,19 @@ function toggleMenu(headerElement) {
         headerElement.parentElement.classList.toggle('open'); 
     }
 }
-function openAddAuthModal() { document.getElementById('addAuthModal').style.display = 'block'; }
-function openDeleteModal() { document.getElementById('deleteModal').style.display = 'block'; }
+
 function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-function checkAddAuth() {
-    if(document.getElementById('addMasterPin').value === "8888") {
-        closeModal('addAuthModal');
-        document.getElementById('addMasterPin').value = '';
-        document.getElementById('addCharModal').style.display = 'block';
-    } else { alert("รหัสผ่านไม่ถูกต้องค่ะ ❌"); }
+function openAddCharModal() { 
+    // เคลียร์ข้อมูลเก่าในฟอร์มก่อนเปิด
+    document.getElementById('charName').value = '';
+    document.getElementById('charDesc').value = '';
+    document.getElementById('charImg').value = '';
+    document.getElementById('charArtist').value = '';
+    document.getElementById('charArtistLink').value = '';
+    document.getElementById('charPrice').value = '';
+    document.getElementById('charMore').value = '';
+    document.getElementById('addCharModal').style.display = 'block'; 
 }
 
 function submitNewCharacter() {
@@ -497,8 +485,10 @@ function submitNewCharacter() {
 
     allData.push(newItem);
     localStorage.setItem('bakery_data', JSON.stringify(allData));
+    
     alert("อบขนมสำเร็จ!"); 
-    location.reload();
+    closeModal('addCharModal'); // ปิดหน้าต่างแทนการรีโหลด เพื่อให้อยู่โหมดแก้ไขต่อได้
+    displayData(allData); // อัปเดตข้อมูลบนหน้าเว็บทันที
 }
 
 function openEditAuthModal() { document.getElementById('editAuthModal').style.display = 'block'; }
@@ -509,6 +499,7 @@ function checkEditAuth() {
         document.getElementById('editMasterPin').value = '';
         isEditMode = true;
         document.getElementById('admin-bar').style.display = 'block';
+        document.getElementById('admin-add-bar').style.display = 'block'; // แสดงปุ่มเพิ่มตัวละคร
         displayData(allData); 
     } else { alert("รหัสผ่านไม่ถูกต้องค่ะ ❌"); }
 }
@@ -516,6 +507,7 @@ function checkEditAuth() {
 function exitEditMode() {
     isEditMode = false;
     document.getElementById('admin-bar').style.display = 'none';
+    document.getElementById('admin-add-bar').style.display = 'none'; // ซ่อนปุ่มเพิ่มตัวละคร
     displayData(allData); 
 }
 
@@ -558,13 +550,15 @@ function displayData(data) {
     const artistDisplay = item['Link นักวาด'] ? `<a href="${item['Link นักวาด']}" target="_blank" style="color:var(--darker); text-decoration:underline;">${item['นักวาด']}</a>` : item['นักวาด'];
     const introText = item['คำบรรยาย'] ? `<div style="font-size: 11px; font-weight: normal; opacity: 0.7; margin-top: 2px; line-height: 1.3; width:100%;">${item['คำบรรยาย']}</div>` : '';
 
+    // ปุ่มแอดมิน (เพิ่มปุ่มลบตัวละครไว้ล่างสุด)
     let adminBtns = '';
     if(isEditMode) {
         adminBtns = `
-        <div style="display:flex; gap:5px; margin-top:10px; width: 100%; border-top: 1px dashed rgba(251, 191, 36, 0.5); padding-top: 10px;">
-            <button class="btn-move-inline" onclick="event.stopPropagation(); moveItemInline('${safeName}', -1, '${item['หมวดหมู่']}')">⬆️ ขึ้น</button>
-            <button class="btn-move-inline" onclick="event.stopPropagation(); moveItemInline('${safeName}', 1, '${item['หมวดหมู่']}')">⬇️ ลง</button>
-            <button class="btn-edit-inline" style="margin-left:auto;" onclick="event.stopPropagation(); openEditForm(this, '${safeName}')">✏️ แก้ไขทั้งหมด</button>
+        <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; width: 100%; border-top: 1px dashed rgba(251, 191, 36, 0.5); padding-top: 10px;">
+            <button class="btn-move-inline" onclick="event.stopPropagation(); moveItemInline('${safeName}', -1, '${item['หมวดหมู่']}')">⬆️</button>
+            <button class="btn-move-inline" onclick="event.stopPropagation(); moveItemInline('${safeName}', 1, '${item['หมวดหมู่']}')">⬇️</button>
+            <button class="btn-edit-inline" style="flex:1;" onclick="event.stopPropagation(); openEditForm(this, '${safeName}')">✏️ แก้ไข</button>
+            <button class="btn-delete-inline" onclick="event.stopPropagation(); deleteItemInline('${safeName}')">🗑️ ลบ</button>
         </div>`;
     }
 
@@ -572,7 +566,6 @@ function displayData(data) {
       <div class="menu-card">
         <div class="menu-header" onclick="toggleMenu(this)" style="${isEditMode ? 'cursor:default;' : 'cursor:pointer;'}">
           <img src="${imgUrl}" alt="${name}" class="menu-img">
-          
           <div class="menu-title-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
             <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
                 <div class="menu-title">
@@ -584,7 +577,7 @@ function displayData(data) {
             ${introText}
             ${adminBtns}
           </div>
-          </div>
+        </div>
         <div class="menu-details">
           <div class="detail-text"><span>🎨</span> <strong>นักวาด:</strong> ${artistDisplay}</div>
           <div class="detail-text"><span>💰</span> <strong>มูลค่า:</strong> ${item['มูลค่า']}</div>
@@ -616,6 +609,25 @@ function moveItemInline(name, dir, category) {
         
         localStorage.setItem('bakery_settings', JSON.stringify(settings));
         displayData(allData); 
+    }
+}
+
+// 🌟 ฟังก์ชันลบตัวละคร (แบบใหม่ กดจากการ์ดได้เลย) 🌟
+function deleteItemInline(name) {
+    if(confirm(`คุณแน่ใจนะคะว่าจะลบ "${name}" ออกจากเตาอบ?`)) {
+        // ลบออกจาก array
+        allData = allData.filter(item => item['ชื่อขนม'] !== name);
+        localStorage.setItem('bakery_data', JSON.stringify(allData));
+        
+        // ลบการตั้งค่าของตัวละครนั้นทิ้งไปด้วย
+        const settings = getLocalSettings();
+        if(settings[name]) {
+            delete settings[name];
+            localStorage.setItem('bakery_settings', JSON.stringify(settings));
+        }
+        
+        alert("ลบข้อมูลแล้วค่ะ! 🗑️");
+        displayData(allData); // อัปเดตหน้าเว็บใหม่
     }
 }
 
@@ -672,7 +684,7 @@ function openEditForm(btn, oldName) {
             </select>
 
             <div class="edit-actions">
-                <button class="btn-save-inline" onclick="saveInlineEdit('${safeOldName}')">💾 บันทึกการแก้ไข</button>
+                <button class="btn-save-inline" onclick="saveInlineEdit('${safeOldName}')">💾 บันทึก</button>
                 <button class="btn-cancel-inline" onclick="displayData(allData)">❌ ยกเลิก</button>
             </div>
         </div>
@@ -722,31 +734,6 @@ function saveInlineEdit(oldName) {
 
     alert("บันทึกข้อมูลเรียบร้อยค่ะ! 💾");
     displayData(allData);
-}
-
-function confirmDelete() {
-  const name = document.getElementById('delName').value;
-  const pin = document.getElementById('delPin').value;
-  if(!name || !pin) return alert("กรุณากรอกข้อมูลให้ครบถ้วนค่ะ");
-  if(pin !== "8888") return alert("รหัสลับไม่ถูกต้องค่ะ ❌");
-
-  if(confirm(`คุณแน่ใจนะคะว่าจะลบ "${name}"?`)) {
-    const initialLength = allData.length;
-    allData = allData.filter(item => item['ชื่อขนม'] !== name);
-    
-    if(allData.length < initialLength) {
-        localStorage.setItem('bakery_data', JSON.stringify(allData));
-        const settings = getLocalSettings();
-        if(settings[name]) {
-            delete settings[name];
-            localStorage.setItem('bakery_settings', JSON.stringify(settings));
-        }
-        alert("ลบข้อมูลแล้วค่ะ!"); 
-        location.reload();
-    } else {
-        alert("ไม่พบชื่อขนมนี้ในระบบค่ะ 🥲");
-    }
-  }
 }
 
 fetchData();
