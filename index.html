@@ -256,7 +256,7 @@ h1 {
 .edit-form-container {
     padding: 15px; background: rgba(255,255,255,0.95);
     border-top: 1px dashed var(--main); display: flex; flex-direction: column; gap: 8px;
-    cursor: default; /* ป้องกันการคลิกแล้วกล่องเปิดปิด */
+    cursor: default;
 }
 .edit-form-container label { font-size: 12px; font-weight: 600; color: var(--darker); margin-top: 5px; }
 .edit-form-container input, .edit-form-container select {
@@ -455,7 +455,6 @@ function showPage(pageId, element) {
 }
 
 function toggleMenu(headerElement) { 
-    // ปิดไม่ให้กดกล่องย่อขยายเวลาอยู่ในโหมดแก้ไข เพื่อป้องกันการคลิกชนกัน
     if(!isEditMode) {
         headerElement.parentElement.classList.toggle('open'); 
     }
@@ -504,7 +503,6 @@ function submitNewCharacter() {
 
 function openEditAuthModal() { document.getElementById('editAuthModal').style.display = 'block'; }
 
-// 🌟 ระบบเข้าและออกโหมดแก้ไข 🌟
 function checkEditAuth() {
     if(document.getElementById('editMasterPin').value === "8888") {
         closeModal('editAuthModal');
@@ -540,7 +538,7 @@ function displayData(data) {
     const target = containers[item['หมวดหมู่']];
     if (!target) return;
     const name = item['ชื่อขนม'];
-    const safeName = name.replace(/'/g, "\\'"); // ป้องกันชื่อตัวละครที่มีเครื่องหมาย '
+    const safeName = name.replace(/'/g, "\\'");
     const set = settings[name] || {sale:'1', love:'2'};
 
     let lightClass = 'status-forever';
@@ -560,7 +558,6 @@ function displayData(data) {
     const artistDisplay = item['Link นักวาด'] ? `<a href="${item['Link นักวาด']}" target="_blank" style="color:var(--darker); text-decoration:underline;">${item['นักวาด']}</a>` : item['นักวาด'];
     const introText = item['คำบรรยาย'] ? `<div style="font-size: 11px; font-weight: normal; opacity: 0.7; margin-top: 2px; line-height: 1.3; width:100%;">${item['คำบรรยาย']}</div>` : '';
 
-    // ปุ่มแอดมิน (จะแสดงเฉพาะตอนเปิดโหมดแก้ไข)
     let adminBtns = '';
     if(isEditMode) {
         adminBtns = `
@@ -575,7 +572,8 @@ function displayData(data) {
       <div class="menu-card">
         <div class="menu-header" onclick="toggleMenu(this)" style="${isEditMode ? 'cursor:default;' : 'cursor:pointer;'}">
           <img src="${imgUrl}" alt="${name}" class="menu-img">
-          <div class="menu-title-row" style="${isEditMode ? 'flex-direction:column; align-items:flex-start;' : ''}">
+          
+          <div class="menu-title-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
             <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
                 <div class="menu-title">
                     <span class="status-light ${lightClass}"></span>
@@ -586,7 +584,7 @@ function displayData(data) {
             ${introText}
             ${adminBtns}
           </div>
-        </div>
+          </div>
         <div class="menu-details">
           <div class="detail-text"><span>🎨</span> <strong>นักวาด:</strong> ${artistDisplay}</div>
           <div class="detail-text"><span>💰</span> <strong>มูลค่า:</strong> ${item['มูลค่า']}</div>
@@ -601,7 +599,6 @@ function displayData(data) {
   });
 }
 
-// 🌟 ฟังก์ชันเลื่อนอันดับหน้าหลัก 🌟
 function moveItemInline(name, dir, category) {
     const settings = getLocalSettings();
     const items = allData.filter(i => i['หมวดหมู่'] === category).sort((a,b) => (settings[a['ชื่อขนม']]?.order || 0) - (settings[b['ชื่อขนม']]?.order || 0));
@@ -622,7 +619,6 @@ function moveItemInline(name, dir, category) {
     }
 }
 
-// 🌟 ฟังก์ชันเปิดฟอร์มแก้ไขในการ์ด 🌟
 function openEditForm(btn, oldName) {
     const card = btn.closest('.menu-card');
     const item = allData.find(i => i['ชื่อขนม'] === oldName);
@@ -684,7 +680,6 @@ function openEditForm(btn, oldName) {
     card.innerHTML = formHtml;
 }
 
-// 🌟 ฟังก์ชันบันทึกข้อมูลที่แก้ไข 🌟
 function saveInlineEdit(oldName) {
     const newCat = document.getElementById(`edit_cat_${oldName}`).value;
     const newName = document.getElementById(`edit_name_${oldName}`).value;
@@ -716,7 +711,6 @@ function saveInlineEdit(oldName) {
     const settings = getLocalSettings();
     const oldSet = settings[oldName] || {};
     
-    // หากมีการเปลี่ยนชื่อขนม ให้ย้ายการตั้งค่าเดิมไปที่ชื่อใหม่
     if (newName !== oldName) {
         settings[newName] = oldSet;
         delete settings[oldName];
